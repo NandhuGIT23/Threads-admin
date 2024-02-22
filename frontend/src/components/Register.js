@@ -69,6 +69,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(selectedPayment);
 
     const details = {
       name,
@@ -148,7 +149,7 @@ const Register = () => {
                 id="others"
                 name="Colleger"
                 value="Others"
-                checked={selectedCollege == "Sona College Of Technology"}
+                checked={selectedCollege !== "Sona College Of Technology"}
                 // onChange={handleOptionChange}
                 onClick={handleCollegeChange}
               />
@@ -386,8 +387,8 @@ const Register = () => {
             <div className="radioBtn">
               <input
                 type="radio"
-                id="sct"
-                name="Colleger"
+                id="pay"
+                name="Upiradio"
                 value="upi"
                 checked={selectedPayment === "upi"}
                 // checked={false}
@@ -401,8 +402,8 @@ const Register = () => {
             <div className="radioBtn">
               <input
                 type="radio"
-                id="sct"
-                name="Colleger"
+                id="pay"
+                name="Upiradio"
                 value="cash"
                 checked={selectedPayment === "cash"}
                 // checked={false}

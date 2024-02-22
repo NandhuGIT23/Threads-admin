@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const RegistrationSchema = new Schema(
+const registrationSchema = new Schema(
   {
     name: {
       type: String,
@@ -23,7 +23,6 @@ const RegistrationSchema = new Schema(
     email: {
       type: String,
       required: true,
-      unique: false,
     },
     number: {
       type: Number,
@@ -31,15 +30,25 @@ const RegistrationSchema = new Schema(
     },
     selectedEvents: {
       type: String,
+      // required: true,
     },
     selectedWorkshops: {
       type: String,
+      // required: true,
     },
-    payment: {
+    upievent: {
       type: String,
-      required: true,
+      default: "no",
+    },
+    upiworkshop: {
+      type: String,
+      default: "no",
+    },
+    selectedPayment: {
+      type: String,
+      require: true,
     },
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("onspot", RegistrationSchema);
+module.exports = mongoose.model("detail", registrationSchema);
