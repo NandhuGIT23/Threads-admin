@@ -1,5 +1,5 @@
 const express = require("express");
-const Registration = require("../models/registrationModel");
+const Details = require("../models/detailsModel");
 const Count = require("../models/countModel");
 
 const router = express.Router();
@@ -19,7 +19,7 @@ router.post("/register", async (req, res) => {
     selectedYear,
     selectedPayment,
   } = req.body);
-  const user = await Registration.findOne({ email });
+  const user = await Details.findOne({ email });
 
   let workshop = selectedWorkshops;
   const a = await Count.findOne({ _id: "65c9f395fde61a170c9bff55" });
@@ -79,13 +79,13 @@ router.post("/register", async (req, res) => {
           );
         }
 
-        const mes = await Registration.updateOne(
+        const mes = await Details.updateOne(
           { email: email },
           { $set: { selectedWorkshops: selectedWorkshops } }
         );
       }
       if (user.selectedEvents == "false") {
-        const mes = await Registration.updateOne(
+        const mes = await Details.updateOne(
           { email: email },
           { $set: { selectedEvents: selectedEvents } }
         );
@@ -144,7 +144,7 @@ router.post("/register", async (req, res) => {
           { $inc: { cyber: 1 } }
         );
       }
-      const approval = await Registration.create({
+      const approval = await Details.create({
         name,
         department,
         selectedCollege,
@@ -153,7 +153,7 @@ router.post("/register", async (req, res) => {
         selectedEvents,
         selectedWorkshops,
         selectedYear,
-        selectedPayment
+        selectedPayment,
       });
       console.log("Line 155 created");
       // let workshop=selectedWorkshops;
@@ -166,6 +166,19 @@ router.post("/register", async (req, res) => {
     } catch (error) {
       res.status(400).json({ error: error.message });
     }
+  }
+});
+
+router.post("/uiux", async (req, res) => {
+  const { key } = req.body;
+  console.log(key);
+  const user = await Details.findOne({ _id: key });
+  if (user) {
+    const name = user.name;
+    const college = user.selectedCollege;
+    const workshop = user.selectedWorkshops;
+    const events = user.selectedEvents;
+    res.json({ name, college, workshop, events }).status(200);
   }
 });
 

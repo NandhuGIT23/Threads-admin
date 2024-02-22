@@ -1,6 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import eventQR from "../image/eventQR.jpeg";
+import workshopQR from "../image/workshopQR.jpeg";
+import workshopEventsQr from "../image/workshopEventsQr.jpeg";
 
 const Register = () => {
   const details = {};
@@ -421,6 +424,38 @@ const Register = () => {
             <br />
             <br />
           </form>
+
+          <div>
+            Pay to this number: <h2>8270202119</h2> or <br />
+            <h4>Event QR</h4>
+            <img
+              style={{ height: "250px", width: "250px" }}
+              src={eventQR}
+              alt=""
+            />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <h4>Workshop QR</h4>
+            <img
+              style={{ height: "250px", width: "250px" }}
+              src={workshopQR}
+              alt=""
+            />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <h4>Workshops and events QR</h4>
+            <img
+              style={{ height: "250px", width: "250px" }}
+              src={workshopEventsQr}
+              alt=""
+            />
+          </div>
         </div>
       </div>
     </div>

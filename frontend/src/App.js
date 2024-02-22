@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Loading from "./components/Loading";
 
 import Scanner from "./components/Scanner";
+import Event from "./components/event1/Event";
 
 const Register = lazy(() => import("./components/Register"));
 
@@ -13,6 +14,14 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/workshop"
+            element={
+              <Suspense fallback={<Loading></Loading>}>
+                <Event></Event>
+              </Suspense>
+            }
+          ></Route>
           <Route
             path="/register"
             element={
