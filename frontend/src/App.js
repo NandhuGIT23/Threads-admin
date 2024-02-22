@@ -2,6 +2,7 @@ import "./App.css";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Loading from "./components/Loading";
+import Home from "./components/Home"
 
 import Scanner from "./components/Scanner";
 import Event from "./components/event1/Event";
@@ -14,6 +15,14 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+        <Route
+            path="/"
+            element={
+              <Suspense fallback={<Loading></Loading>}>
+                <Home></Home>
+              </Suspense>
+            }
+          ></Route>
           <Route
             path="/workshop"
             element={

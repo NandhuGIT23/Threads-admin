@@ -1,100 +1,45 @@
-// import React, { useEffect, useRef, useState } from 'react';
-
-// const QRCodeScanner = () => {
-//   const videoRef = useRef(null);
-//   const [scannedData, setScannedData] = useState([]);
-//   const [scanCount, setScanCount] = useState(0);
-
-//   useEffect(() => {
-//     const initializeScanner = async () => {
-//       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-//         alert('Your browser does not support the camera API');
-//       } else {
-//         const scanner = new window.Instascan.Scanner({
-//           video: videoRef.current,
-//           mirror: false,
-//         });
-
-//         scanner.addListener('scan', (content) => {
-//           handleScan(content);
-//         });
-
-//         try {
-//           const cameras = await window.Instascan.Camera.getCameras();
-//           if (cameras.length > 0) {
-//             scanner.start(cameras[0]);
-//           } else {
-//             console.error('No cameras found.');
-//           }
-//         } catch (error) {
-//           console.error(error);
-//         }
-//       }
-//     };
-
-//     initializeScanner();
-//   }, []);
-
-//   const handleScan = (content) => {
-//     // Check if the scanned content is not similar to any existing data
-//     if (!scannedData.some((data) => areStringsSimilar(data, content))) {
-//       setScannedData((prevData) => {
-//         // Ensure uniqueness by checking if the content is already in the array
-//         const newData = [...prevData, content].slice(0, 3);
-//         setScanCount(newData.length); // Update the scan count based on the new data length
-//         return newData;
-//       });
-//     }
-//   };
-
-//   // Function to check if two strings are similar (you can customize this based on your requirements)
-//   const areStringsSimilar = (str1, str2) => {
-//     // For example, you can make a case-insensitive comparison
-//     return str1.toLowerCase() === str2.toLowerCase();
-//   };
-
-//   const renderTableRows = () => {
-//     return scannedData.map((data, index) => (
-//       <tr key={index}>
-//         <td>{data}</td>
-//       </tr>
-//     ));
-//   };
-
-//   return (
-//     <div className='container'>
-//       <div className='row'>
-//         <div className='col-12 d-flex justify-content-center my-5'>
-//           <video ref={videoRef} style={{ width: '300px', borderRadius: '20px' }} className='border border-warning'></video>
-//         </div>
-//       </div>
-//       <div className='row d-flex justify-content-center'>
-//         <div className='col-10 col-md-5'>
-//           <table className='table table-hover' style={{ textAlign: 'center' }}>
-//             <thead className='bg-primary'>
-//               <tr>
-//                 <th scope='col' className='text-light'>
-//                   Participant Names
-//                 </th>
-//               </tr>
-//             </thead>
-//             <tbody>{renderTableRows()}
-//             </tbody>
-//           </table>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default QRCodeScanner;
-
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
+import logo from "../../image/ThreadsLogo.png";
 
 function Scanner() {
   const [ScanResult, setScanResult] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedWorkshop, setSelectedWorkshop] = useState(false);
+
+  const handleModalChange = () => {
+    setShowModal(!showModal);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(selectedWorkshop);
+    const response = await fetch(
+      "http://localhost:4000/admin/download-report",
+      {
+        method: "POST",
+        body: JSON.stringify({ selectedWorkshop }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "example.xlsx";
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  };
+
+  const handleWorkshopChange = (event) => {
+    setSelectedWorkshop(event.target.value);
+  };
 
   useEffect(() => {
     const scanner = new Html5QrcodeScanner("reader", {
@@ -109,8 +54,6 @@ function Scanner() {
 
     async function success(result) {
       setScanResult(result);
-      console.log(JSON.stringify({ key: result }));
-      // console.log("Scan result: ", ScanResult);
 
       const response = await fetch("http://localhost:4000/admin/uiux", {
         method: "POST",
@@ -124,8 +67,11 @@ function Scanner() {
         console.log(response.status);
         const data = await response.json();
         scanner.clear();
-        alert(`Name: ${data.name}, College: ${data.college}, workshop: ${data.workshop} Events: ${data.events}`);
+        alert(
+          `Name: ${data.name}, College: ${data.college}, workshop: ${data.workshop} Events: ${data.events}`
+        );
       }
+      window.location.reload();
     }
 
     function error(error) {
@@ -135,10 +81,96 @@ function Scanner() {
 
   return (
     <div>
-      <p>Scanner</p>
-      {/* {ScanResult ? <div>Success: {ScanResult}</div> : <div id="reader"></div>} */}
-      {ScanResult && <div>Success: {ScanResult}</div>}
-      <div id="reader"></div>
+      <div>
+        <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+          <a className="navbar-brand text-warning" href="#">
+            <img src={logo} style={{ width: "35px" }} alt="" />
+            THREADS'24
+          </a>
+
+          <button
+            className="navbar-toggler bg-light"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarText"
+            aria-controls="navbarText"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse " id="navbarText">
+            <ul className="navbar-nav ml-auto">
+              <li className="nav-item active m-2">
+                <button className="btn btn-primary btn-block">
+                  Attendance
+                </button>
+              </li>
+              <li className="nav-item m-2">
+                <button
+                  onClick={handleModalChange}
+                  className="btn btn-primary btn-block"
+                >
+                  Download Report
+                </button>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+      <div>
+        <p>Scanner</p>
+        {/* {ScanResult ? <div>Success: {ScanResult}</div> : <div id="reader"></div>} */}
+        {ScanResult && <div>Success: {ScanResult}</div>}
+        <div id="reader"></div>
+      </div>
+      {showModal && (
+        <form>
+          <label>
+            <input
+              onChange={handleWorkshopChange}
+              type="radio"
+              name="workshop"
+              value="web_development"
+            />
+            Web Development
+          </label>
+          <br />
+          <label>
+            <input
+              onChange={handleWorkshopChange}
+              type="radio"
+              name="workshop"
+              value="cyber_security"
+            />
+            Cyber Security
+          </label>
+          <br />
+          <label>
+            <input
+              onChange={handleWorkshopChange}
+              type="radio"
+              name="workshop"
+              value="flutter"
+            />
+            Flutter
+          </label>
+          <br />
+          <label>
+            <input
+              onChange={handleWorkshopChange}
+              type="radio"
+              name="workshop"
+              value="uiux"
+            />
+            UI/UX
+          </label>
+          <br />
+          <button onClick={handleSubmit} type="submit">
+            Submit
+          </button>
+        </form>
+      )}
     </div>
   );
 }

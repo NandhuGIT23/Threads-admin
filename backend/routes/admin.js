@@ -1,6 +1,7 @@
 const express = require("express");
 const Details = require("../models/detailsModel");
 const Count = require("../models/countModel");
+const XLSX = require("xlsx");
 
 const router = express.Router();
 
@@ -180,6 +181,27 @@ router.post("/uiux", async (req, res) => {
     const events = user.selectedEvents;
     res.json({ name, college, workshop, events }).status(200);
   }
+});
+
+router.post("/download-report", async (req, res) => {
+  const { selectedWorkshop } = req.body;
+  const a = await Details.find({ selectedWorkshops: selectedWorkshop });
+  const data = JSON.parse(JSON.stringify(a));
+
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+  const buffer = XLSX.write(wb, { type: "buffer", bookType: "xlsx" });
+
+  res.set(
+    "Content-Type",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+  );
+  res.set("Content-Disposition", 'attachment; filename="export.xlsx"');
+  res.send(buffer);
+
+  console.log(selectedWorkshop);
+  console.log(data);
 });
 
 module.exports = router;

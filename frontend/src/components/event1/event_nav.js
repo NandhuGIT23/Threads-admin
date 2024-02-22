@@ -3,6 +3,7 @@ import logo from '../../image/ThreadsLogo.png'
 
 
 function event_nav() {
+  
   return (
     <div>
          <nav className="navbar navbar-expand-lg navbar-light bg-dark">

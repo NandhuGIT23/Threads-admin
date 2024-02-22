@@ -5,7 +5,7 @@ import Attendance from './attendance'
 function Event() {
   return (
     <div>
-        <Event_nav/>
+        {/* <Event_nav/> */}
         <Attendance/>
     </div>
   )
