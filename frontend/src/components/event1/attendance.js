@@ -81,7 +81,7 @@ function Scanner() {
         setName(data.name);
         setCollege(data.college);
         setWorkshop(data.workshop);
-        Navigate("/workshop");
+        Navigate("/");
         return;
       }
       // window.location.reload();
