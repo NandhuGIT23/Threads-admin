@@ -86,7 +86,7 @@ const Register = () => {
       selectedPayment,
     };
 
-    const response = await fetch("http://localhost:4000/admin/register", {
+    const response = await fetch("https://threads-admin.onrender.com/admin/register", {
       method: "POST",
       body: JSON.stringify(details),
       headers: {

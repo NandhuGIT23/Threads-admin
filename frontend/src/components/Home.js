@@ -8,7 +8,7 @@ function Home() {
       <Link to="/workshop">
         <button>Workshops</button>
       </Link>
-      <Link to="/events">
+      <Link to="/event">
         <button>Events</button>
       </Link>
     </div>

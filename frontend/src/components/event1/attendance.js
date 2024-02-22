@@ -2,11 +2,16 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Html5QrcodeScanner } from "html5-qrcode";
 import logo from "../../image/ThreadsLogo.png";
+import { useNavigate, Link } from "react-router-dom";
 
 function Scanner() {
+  const Navigate = useNavigate();
   const [ScanResult, setScanResult] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedWorkshop, setSelectedWorkshop] = useState(false);
+  const [name, setName] = useState("");
+  const [college, setCollege] = useState("");
+  const [workshop, setWorkshop] = useState("");
 
   const handleModalChange = () => {
     setShowModal(!showModal);
@@ -16,7 +21,7 @@ function Scanner() {
     e.preventDefault();
     console.log(selectedWorkshop);
     const response = await fetch(
-      "http://localhost:4000/admin/download-report",
+      "https://threads-admin.onrender.com/admin/download-report",
       {
         method: "POST",
         body: JSON.stringify({ selectedWorkshop }),
@@ -55,29 +60,37 @@ function Scanner() {
     async function success(result) {
       setScanResult(result);
 
-      const response = await fetch("http://localhost:4000/admin/uiux", {
-        method: "POST",
-        body: JSON.stringify({ key: result }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "https://threads-admin.onrender.com/admin/uiux",
+        {
+          method: "POST",
+          body: JSON.stringify({ key: result }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.status == 200) {
         console.log(response.status);
         const data = await response.json();
         scanner.clear();
-        alert(
-          `Name: ${data.name}, College: ${data.college}, workshop: ${data.workshop} Events: ${data.events}`
-        );
+        // alert(
+        //   `Name: ${data.name}, College: ${data.college}, workshop: ${data.workshop} Events: ${data.events}`
+        // );
+        setName(data.name);
+        setCollege(data.college);
+        setWorkshop(data.workshop);
+        Navigate("/workshop");
+        return;
       }
-      window.location.reload();
+      // window.location.reload();
     }
 
     function error(error) {
       console.log(error);
     }
-  }, []);
+  }, [ScanResult]);
 
   return (
     <div>
@@ -119,7 +132,7 @@ function Scanner() {
         </nav>
       </div>
       <div>
-        <p>Scanner</p>
+        {/* <p>Scanner</p> */}
         {/* {ScanResult ? <div>Success: {ScanResult}</div> : <div id="reader"></div>} */}
         {ScanResult && <div>Success: {ScanResult}</div>}
         <div id="reader"></div>
@@ -171,6 +184,15 @@ function Scanner() {
           </button>
         </form>
       )}
+      <div>
+        Name: {name} <br />
+        College: {college}
+        <br />
+        Workshop: {workshop} <br />
+        <Link to="/workshop">
+          <button>Home</button>
+        </Link>
+      </div>
     </div>
   );
 }

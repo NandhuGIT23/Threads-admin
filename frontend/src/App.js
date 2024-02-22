@@ -5,9 +5,9 @@ import Loading from "./components/Loading";
 import Home from "./components/Home"
 
 import Scanner from "./components/Scanner";
-import Event from "./components/event1/Event";
+import Workshop from "./components/event1/Event";
+import Event from "./components/event1/attendanceEvents";
 
-const Register = lazy(() => import("./components/Register"));
 
 function App() {
   // fallback={<Loading></Loading>}
@@ -27,27 +27,19 @@ function App() {
             path="/workshop"
             element={
               <Suspense fallback={<Loading></Loading>}>
+                <Workshop></Workshop>
+              </Suspense>
+            }
+          ></Route>
+          <Route
+            path="/event"
+            element={
+              <Suspense fallback={<Loading></Loading>}>
                 <Event></Event>
               </Suspense>
             }
           ></Route>
-          <Route
-            path="/register"
-            element={
-              <Suspense fallback={<Loading></Loading>}>
-                <Register></Register>
-              </Suspense>
-            }
-          ></Route>
 
-          <Route
-            path="/scanner"
-            element={
-              <Suspense fallback={<Loading></Loading>}>
-                <Scanner></Scanner>
-              </Suspense>
-            }
-          ></Route>
         </Routes>
       </BrowserRouter>
     </div>
