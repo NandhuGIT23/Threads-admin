@@ -81,7 +81,7 @@ function Scanner() {
         setName(data.name);
         setCollege(data.college);
         setWorkshop(data.workshop);
-        Navigate("/");
+        Navigate("/workshop");
         return;
       }
       // window.location.reload();
@@ -189,7 +189,7 @@ function Scanner() {
         College: {college}
         <br />
         Workshop: {workshop} <br />
-        <Link to="/workshop">
+        <Link to="/">
           <button>Home</button>
         </Link>
       </div>

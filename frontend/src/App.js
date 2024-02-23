@@ -2,44 +2,47 @@ import "./App.css";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Loading from "./components/Loading";
-import Home from "./components/Home"
+import Home from "./components/Home";
 
-import Scanner from "./components/Scanner";
 import Workshop from "./components/event1/Event";
 import Event from "./components/event1/attendanceEvents";
 
+import QRCodeReader from "./components/qrreader";
+import Report from "./components/report";
+import Navbar from "./components/navbar";
+import { QrReader } from "react-qr-reader";
 
 function App() {
   // fallback={<Loading></Loading>}
   return (
     <div className="App">
       <BrowserRouter>
+        <Navbar />
         <Routes>
-        <Route
+          <Route
             path="/"
             element={
               <Suspense fallback={<Loading></Loading>}>
-                <Home></Home>
+                <QRCodeReader></QRCodeReader>
               </Suspense>
             }
           ></Route>
           <Route
-            path="/workshop"
+            path="/report"
             element={
               <Suspense fallback={<Loading></Loading>}>
-                <Workshop></Workshop>
+                <Report></Report>
               </Suspense>
             }
           ></Route>
-          <Route
+          {/* <Route
             path="/event"
             element={
               <Suspense fallback={<Loading></Loading>}>
                 <Event></Event>
               </Suspense>
             }
-          ></Route>
-
+          ></Route> */}
         </Routes>
       </BrowserRouter>
     </div>
