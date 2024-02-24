@@ -2,15 +2,14 @@ import React from "react";
 import logo from "../image/ThreadsLogo.png";
 import { Link } from "react-router-dom";
 
-
 function navbar() {
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-light bg-dark">
-        <a className="navbar-brand text-warning" href="#">
+        <Link className="navbar-brand text-warning" to="/">
           <img src={logo} style={{ width: "35px" }} alt="" />
           THREADS'24
-        </a>
+        </Link>
 
         <button
           className="navbar-toggler bg-light"

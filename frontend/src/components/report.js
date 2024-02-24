@@ -3,12 +3,12 @@ import React, { useState } from "react";
 function ReportGenerator() {
   const [selectedWorkshop, setSelectedWorkshop] = useState("");
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const response = await fetch(
       "https://threads-admin.onrender.com/admin/download-report",
+      // "admin/download-report",
       {
         method: "POST",
         body: JSON.stringify({ selectedWorkshop }),
@@ -60,10 +60,10 @@ function ReportGenerator() {
                     value={selectedWorkshop}
                     onChange={handleWorkshopChange}
                   >
-                    <option value="web_development">Web Development</option>
-                    <option value="cyber_security">Cyber Security</option>
+                    <option value="web_development">All Events</option>
+                    {/* <option value="cyber_security">Cyber Security</option>
                     <option value="flutter">Flutter</option>
-                    <option value="uiux">UI/UX</option>
+                    <option value="uiux">UI/UX</option> */}
                     {/* Add similar options for other workshops */}
                   </select>
                 </div>

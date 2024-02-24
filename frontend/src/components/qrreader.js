@@ -6,7 +6,6 @@ function QRCodeReader() {
   const Navigate = useNavigate();
   const [latestScanResult, setLatestScanResult] = useState(null);
   const [additionalData, setAdditionalData] = useState(null);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const scanner = new Html5QrcodeScanner("reader", {
@@ -24,8 +23,8 @@ function QRCodeReader() {
 
       // Fetch additional data from the API
       const response = await fetch(
-        // "https://threads-admin.onrender.com/admin/uiux",
-        "admin/uiux",
+        "https://threads-admin.onrender.com/admin/uiux",
+        // "admin/uiux",
         {
           method: "POST",
           body: JSON.stringify({ key: result }),
@@ -39,8 +38,6 @@ function QRCodeReader() {
         const data = await response.json();
         console.log(data);
         setAdditionalData(data);
-      } else {
-        setError("Participant has not registered for workshop");
       }
     }
 
@@ -77,6 +74,9 @@ function QRCodeReader() {
                         <p>Name: {additionalData.name}</p>
                       </div>
                       <div className="d-flex justify-content-center mb-1">
+                        <p>Number: {additionalData.number}</p>
+                      </div>
+                      <div className="d-flex justify-content-center mb-1">
                         <p>College: {additionalData.college}</p>
                       </div>
                       <div className="d-flex justify-content-center">
@@ -90,7 +90,6 @@ function QRCodeReader() {
           </div>
         </div>
       )}
-      {error && <h3>Participant has not been registerd for events</h3>}
     </div>
   );
 }

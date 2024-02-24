@@ -177,21 +177,21 @@ router.post("/uiux", async (req, res) => {
   if (user) {
     const name = user.name;
     const college = user.selectedCollege;
-    const workshop = user.selectedWorkshops;
     const events = user.selectedEvents;
-    res.json({ name, college, workshop, events }).status(200);
+    const number = user.number;
+    res.json({ name, number, college, events }).status(200);
   } else {
     const name = "Not registered";
     const college = "Not registered";
-    const workshop = "Not registered";
     const events = "Not registered";
-    res.json({ name: name, college, workshop, events }).status(200);
+    const number = "Not registered";
+    res.json({ name, number, college, events }).status(200);
   }
 });
 
 router.post("/download-report", async (req, res) => {
-  const { selectedWorkshop } = req.body;
-  const a = await Details.find({ selectedWorkshops: selectedWorkshop });
+  // const { selectedWorkshop } = req.body;
+  const a = await Details.find({});
   const data = JSON.parse(JSON.stringify(a));
 
   const ws = XLSX.utils.json_to_sheet(data);
@@ -206,7 +206,7 @@ router.post("/download-report", async (req, res) => {
   res.set("Content-Disposition", 'attachment; filename="export.xlsx"');
   res.send(buffer);
 
-  console.log(selectedWorkshop);
+  // console.log(selectedWorkshop);
   console.log(data);
 });
 
