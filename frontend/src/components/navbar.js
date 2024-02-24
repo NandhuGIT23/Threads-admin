@@ -1,5 +1,7 @@
 import React from "react";
 import logo from "../image/ThreadsLogo.png";
+import { Link } from "react-router-dom";
+
 
 function navbar() {
   return (
@@ -24,18 +26,18 @@ function navbar() {
         <div className="collapse navbar-collapse " id="navbarText">
           <ul className="navbar-nav ml-auto">
             <li className="nav-item active m-2">
-              <a href="/">
+              <Link href="/">
                 <button className="btn btn-primary btn-block">
                   Attendance
                 </button>
-              </a>
+              </Link>
             </li>
             <li className="nav-item m-2">
-              <a href="/report">
+              <Link to="/report">
                 <button className="btn btn-primary btn-block">
                   Download Report
                 </button>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

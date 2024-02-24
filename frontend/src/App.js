@@ -2,10 +2,7 @@ import "./App.css";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Loading from "./components/Loading";
-import Home from "./components/Home";
 
-import Workshop from "./components/event1/Event";
-import Event from "./components/event1/attendanceEvents";
 
 import QRCodeReader from "./components/qrreader";
 import Report from "./components/report";

@@ -180,6 +180,12 @@ router.post("/uiux", async (req, res) => {
     const workshop = user.selectedWorkshops;
     const events = user.selectedEvents;
     res.json({ name, college, workshop, events }).status(200);
+  } else {
+    const name = "Not registered";
+    const college = "Not registered";
+    const workshop = "Not registered";
+    const events = "Not registered";
+    res.json({ name: name, college, workshop, events }).status(200);
   }
 });
 
